@@ -15,6 +15,8 @@
  *
  */
 
+/* Modified March 2021 */
+
 package io.github.zhongwm.commons.securityio;
 
 
@@ -119,14 +121,14 @@ public class PrivateKeyReader {
                 }
             }
             KeySpec keySpec = null;
-            byte[] encoded = Base64.getEncoder().encode(builder.toString().getBytes());
+            byte[] decoded = Base64.getDecoder().decode(builder.toString());
             if (isRSAKey)
             {
-                keySpec = getRSAKeySpec(encoded);
+                keySpec = getRSAKeySpec(decoded);
             }
             else
             {
-                keySpec = new PKCS8EncodedKeySpec(encoded);
+                keySpec = new PKCS8EncodedKeySpec(decoded);
             }
             KeyFactory kf = KeyFactory.getInstance("RSA");
             key = kf.generatePrivate(keySpec);
